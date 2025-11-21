@@ -4,17 +4,16 @@
     <meta charset="UTF-8">
     <title>Admin Dashboard</title>
     <style>
-       body { 
+      body { 
         margin: 0; 
         padding: 0; 
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-        background-color: #1f2937; /* Latar belakang gelap utama */
-        color: #f3f4f6; /* Warna teks terang */
+        background-color: #1f2937;
+        color: #f3f4f6; 
     }
 
-    /* Navbar - Konsisten dengan Login/Register */
     .navbar { 
-        background-color: #374151; /* Warna navbar gelap */
+        background-color: #374151; 
         padding: 15px 30px; 
         box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
         display: flex; 
@@ -22,80 +21,67 @@
         align-items: center; 
     }
     .navbar h2 {
-        color: #f3f4f6; /* Warna Judul Navbar Putih */
+        color: #f3f4f6; 
         margin: 0;
     }
     .navbar a { 
         text-decoration: none; 
         color: white; 
         padding: 8px 12px; 
-        border-radius: 6px; /* Sudut lebih lembut */
-        background-color: #ef4444; /* Warna tombol Logout (merah) */
+        border-radius: 6px; 
+        background-color: #ef4444; 
         font-weight: 600; 
         transition: background-color 0.3s;
     }
     .navbar a:hover {
-        background-color: #dc2626; /* Warna hover */
+        background-color: #dc2626;
     }
 
-    /* Dashboard Container dan Judul */
     .dashboard-container { 
         max-width: 1200px; 
-        margin: 30px auto; 
+        margin: 30px auto;
         padding: 0 20px; 
     }
     h1 { 
-        color: #a78bfa; /* Warna ungu untuk judul utama */
+        color: #a78bfa; 
         margin-bottom: 25px; 
+        text-align: center;
     }
-
-    /* Tabel CSS */
+    h3 {
+        color: #a78bfa;
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        font-size: 1.5em;
+    }
+    
     .data-table { 
         width: 100%; 
         border-collapse: collapse; 
-        box-shadow: 0 5px 15px rgba(0,0,0,0.4); 
-        background-color: #374151; /* Warna latar belakang tabel gelap */
-        border-radius: 8px; 
+        box-shadow: 0 0 15px rgba(0,0,0,0.3); 
+        background-color: #374151;
+        border-radius: 4px;
         overflow: hidden; 
+        margin-bottom: 40px;
     }
     .data-table th, .data-table td { 
         padding: 15px; 
         text-align: left; 
-        border-bottom: 1px solid #4b5563; 
+        border-bottom: 1px solid #4b5563;
     }
     .data-table th { 
-        background-color: #1e3a8a; /* Warna header tabel biru gelap */
+        background-color: #1e3a8a; 
         color: #f3f4f6; 
         font-weight: 600; 
     }
     .data-table tr:hover { 
-        background-color: #4b5563; /* Hover effect gelap */
+        background-color: #4b5563; 
     }
-    
-    /* Badge Status CSS */
     .status-active { background-color: #10b981; color: #1f2937; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
     .status-inactive { background-color: #ef4444; color: #1f2937; padding: 4px 8px; border-radius: 4px; font-weight: bold; }
-    
-    /* Aksi dan Tombol */
-    .btn-delete { 
-        background-color: #ef4444; 
-        color: white; 
-        padding: 8px 12px; 
-        border: none; 
-        cursor: pointer; 
-        border-radius: 4px; 
-        transition: background-color 0.3s;
-    }
-    .btn-delete:hover {
-        background-color: #dc2626;
-    }
-    .btn-toggle-key { 
-        background: none; 
-        border: none; 
-        color: #60a5fa; /* Warna biru */
-        cursor: pointer; 
-        font-size: 0.9em; 
-    }
+    .btn-delete { background-color: #ef4444; color: white; padding: 8px 12px; border: none; cursor: pointer; border-radius: 4px; transition: background-color 0.3s;}
+    .btn-delete:hover { background-color: #dc2626; }
+    .btn-toggle-key { background: none; border: none; color: #60a5fa; cursor: pointer; font-size: 0.9em; }
     </style>
 </head>
 <body>
@@ -105,35 +91,41 @@
     </div>
 
     <div class="dashboard-container">
-        <h1>Daftar Pengguna API</h1>
+    <h1 style="margin-bottom: 0;">Pengelolaan Pengguna dan API Key</h1>
 
-        <p id="message-area" style="color:#10b981; margin-bottom: 15px; font-weight: bold;"></p>
+    <p id="message-area" style="color:#10b981; margin-bottom: 15px; font-weight: bold; text-align: center;"></p>
 
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>ID User</th>
-                    <th>Nama Lengkap</th>
-                    <th>Email</th>
-                    <th>API Key</th>
-                    <th>Expires At</th>
-                    <th>Status Key</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="user-data-body">
-                <tr>
-                    <td colspan="7" style="text-align:center;">Memuat data...</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <h3>Daftar Pengguna Sistem</h3>
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>ID User</th>
+            <th>Nama Lengkap</th>
+            <th>Email</th>
+            <th>Aksi</th> 
+            </tr>
+    </thead>
+    <tbody id="user-data-body">
+        </tbody>
+</table>
 
+<h3>Detail API Key (Aktif & Nonaktif)</h3>
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>ID User</th>
+            <th>API Key</th>
+            <th>Expires At</th>
+            <th>Status Key</th>
+        </tr>
+    </thead>
+    <tbody id="api-key-data-body">
+        </tbody>
+</table>
+</div>
     <script>
-        // Jalur untuk endpoint API yang akan Anda buat di server
         const API_DATA_ENDPOINT = '/api/users/data'; 
 
-        // Fungsi untuk mengambil data dari server
         async function fetchUserData() {
             try {
                 const response = await fetch('/admin/dashboard-data');
@@ -148,51 +140,59 @@
                 document.getElementById('message-area').textContent = 'Error: Gagal memuat data.';
             }
         }
+
+function renderTable(users) {
+    const userTbody = document.getElementById('user-data-body');
+    const keyTbody = document.getElementById('api-key-data-body'); 
+    
+    userTbody.innerHTML = '';
+    keyTbody.innerHTML = '';
+    
+    if (users.length === 0) {
+        userTbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Tidak ada data pengguna.</td></tr>`;
+        keyTbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Tidak ada data kunci.</td></tr>`;
+        return;
+    }
+
+    users.forEach(user => {
+        const fullName = `${user.first_name} ${user.last_name}`;
         
-        // Fungsi untuk merender data ke dalam tabel
-        function renderTable(users) {
-            const tbody = document.getElementById('user-data-body');
-            tbody.innerHTML = ''; // Kosongkan
+        const userRow = userTbody.insertRow();
+        userRow.insertCell().textContent = user.user_id;
+        userRow.insertCell().textContent = fullName;
+        userRow.insertCell().textContent = user.email;
+        
+        const actionCell = userRow.insertCell();
+        actionCell.innerHTML = `
+            <form action="/admin/delete-user/${user.user_id}" method="POST" onsubmit="return confirm('Yakin ingin menghapus user ${user.email}?')">
+                <button type="submit" class="btn-delete">Hapus</button>
+            </form>
+        `;
+        if (user.api_key) {
+            const keyRow = keyTbody.insertRow();
+            const keyId = `key-${user.user_id}`;
+            const maskedKey = '********';
+            const statusClass = user.status === 'Active' ? 'status-active' : 'status-inactive';
+
+            keyRow.insertCell().textContent = user.user_id; // ID User
+
+            // Kolom API Key dengan Toggle
+            const keyCell = keyRow.insertCell();
+            keyCell.innerHTML = `
+                <span id="masked-${keyId}">${maskedKey}</span>
+                <span id="full-${keyId}" style="display:none; font-family:monospace;">${user.api_key}</span>
+                <button class="btn-toggle-key" onclick="toggleKey('${keyId}', this)">Lihat</button>
+            `;
             
-            if (users.length === 0) {
-                 tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">Tidak ada data pengguna.</td></tr>`;
-                 return;
-            }
-
-            users.forEach(user => {
-                const row = tbody.insertRow();
-                
-                const fullName = `${user.first_name} ${user.last_name}`;
-                const statusClass = user.status === 'Active' ? 'status-active' : 'status-inactive';
-                const maskedKey = user.api_key ? '********' : 'N/A';
-                const keyId = `key-${user.user_id}`;
-
-                row.insertCell().textContent = user.user_id;
-                row.insertCell().textContent = fullName;
-                row.insertCell().textContent = user.email;
-                
-                // Kolom API Key dengan Toggle
-                const keyCell = row.insertCell();
-                keyCell.innerHTML = `
-                    <span id="masked-${keyId}">${maskedKey}</span>
-                    <span id="full-${keyId}" style="display:none; font-family:monospace;">${user.api_key || 'No Key'}</span>
-                    <button class="btn-toggle-key" onclick="toggleKey('${keyId}', this)">Lihat</button>
-                `;
-                
-                row.insertCell().textContent = user.expires_at ? new Date(user.expires_at).toLocaleDateString() : 'N/A';
-                row.insertCell().innerHTML = `<span class="${statusClass}">${user.status}</span>`;
-                
-                // Kolom Aksi (Delete)
-                const actionCell = row.insertCell();
-                actionCell.innerHTML = `
-                    <form action="/admin/delete-user/${user.user_id}" method="POST" onsubmit="return confirm('Yakin ingin menghapus user ${user.email}?')">
-                        <button type="submit" class="btn-delete">Hapus</button>
-                    </form>
-                `;
-            });
+            // Kolom Expires At
+            keyRow.insertCell().textContent = user.expires_at ? new Date(user.expires_at).toLocaleDateString() : 'N/A';
+            
+            // Kolom Status Key
+            keyRow.insertCell().innerHTML = `<span class="${statusClass}">${user.status}</span>`;
         }
+    });
+}
         
-        // Fungsi Toggle Key
         function toggleKey(keyId, button) {
             const masked = document.getElementById(`masked-${keyId}`);
             const full = document.getElementById(`full-${keyId}`);
@@ -208,10 +208,8 @@
             }
         }
 
-        // Jalankan saat halaman dimuat
         document.addEventListener('DOMContentLoaded', fetchUserData);
         
-        // Menampilkan pesan dari Query String (misal dari redirect setelah Delete)
         const urlParams = new URLSearchParams(window.location.search);
         const msg = urlParams.get('msg');
         const error = urlParams.get('error');
