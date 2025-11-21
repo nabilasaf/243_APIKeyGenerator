@@ -1,26 +1,14 @@
 const crypto = require('crypto');
 
 /**
- * Menghasilkan API Key unik 64 karakter.
- * @returns {string} API Key
+ * Menghasilkan string API Key acak dan aman secara kriptografis.
+ * @returns {string} API Key sepanjang 32 karakter
  */
 const generateApiKey = () => {
-    // Menghasilkan 32 byte random, lalu diencode sebagai heksadesimal (64 karakter)
-    return crypto.randomBytes(32).toString('hex');
-};
-
-/**
- * Menghitung tanggal kedaluwarsa 30 hari dari sekarang.
- * @returns {Date} Tanggal kedaluwarsa
- */
-const getExpiryDate = () => {
-    const expiresAt = new Date();
-    // Tambahkan 30 hari (30 * 24 * 60 * 60 * 1000 milidetik)
-    expiresAt.setDate(expiresAt.getDate() + 30);
-    return expiresAt;
+    // Menghasilkan 16 byte random dan mengkonversinya ke string hex (32 karakter)
+    return crypto.randomBytes(16).toString('hex');
 };
 
 module.exports = {
     generateApiKey,
-    getExpiryDate
 };

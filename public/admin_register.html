@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Register</title>
+    <style>
+       body { 
+        margin: 0; 
+        padding: 0; 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        background-color: #1f2937; /* Latar belakang gelap utama */
+        color: #f3f4f6; /* Warna teks terang */
+    }
+    
+    /* Container Form */
+    .container { 
+        max-width: 400px; 
+        margin: 80px auto; /* Margin disesuaikan agar lebih tengah */
+        padding: 30px; 
+        border-radius: 12px; 
+        background-color: #374151; /* Warna gelap sekunder untuk form */
+        box-shadow: 0 10px 20px rgba(0,0,0,0.5); /* Shadow lebih kuat */
+        text-align: center; /* Memastikan judul di tengah */
+    }
+    h2 { 
+        color: #a78bfa; /* Warna ungu untuk judul */
+        margin-bottom: 25px; 
+    }
+    label { 
+        display: block; 
+        margin-bottom: 5px; 
+        color: #d1d5db; /* Warna label lebih lembut */
+        text-align: left; /* Teks label ke kiri */
+        margin-top: 15px;
+    }
+
+    /* Input Fields */
+    input[type="email"], input[type="password"] { 
+        width: 100%; 
+        padding: 12px; 
+        margin: 8px 0; 
+        box-sizing: border-box; 
+        border: 1px solid #4b5563; /* Border disesuaikan */
+        border-radius: 6px; 
+        background-color: #4b5563; /* Latar belakang input gelap */
+        color: #f3f4f6; /* Teks input putih */
+    }
+    
+    /* Tombol Register */
+    button { 
+        background-color: #a78bfa; /* Warna ungu terang */
+        color: #1f2937; /* Warna teks gelap */
+        font-weight: bold; 
+        padding: 12px 15px; 
+        width: 100%; 
+        border: none; 
+        cursor: pointer; 
+        border-radius: 6px; 
+        transition: background-color 0.3s; 
+        margin-top: 20px;
+    }
+    button:hover { 
+        background-color: #8b5cf6; /* Warna ungu saat hover */
+    }
+    
+    /* Link dan Pesan */
+    .error-msg { 
+        color: #ef4444; 
+        font-weight: bold; 
+        margin-bottom: 15px; 
+    }
+    .success-msg { 
+        color: #10b981; 
+        font-weight: bold; 
+        margin-bottom: 15px; 
+    }
+    .container p a {
+        color: #60a5fa; /* Warna link biru */
+        text-decoration: none;
+    }
+    .container p a:hover {
+        text-decoration: underline;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Register</h2>
+
+        <p class="error-msg" id="server-error-message"></p>
+        <p class="success-msg" id="server-success-message"></p>
+
+        <form action="/admin/register" method="POST">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+
+            <button type="submit">Register</button>
+        </form>
+        
+        <p>Sudah punya akun? <a href="/admin/login">Login di sini</a></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            const errorMsg = urlParams.get('error');
+            const successMsg = urlParams.get('msg'); 
+            const inputEmail = urlParams.get('email');
+
+            const emailField = document.getElementById('email');
+            const errorDisplay = document.getElementById('server-error-message');
+            const successDisplay = document.getElementById('server-success-message');
+
+            if (errorMsg) {
+                errorDisplay.textContent = decodeURIComponent(errorMsg);
+               
+                if (inputEmail) {
+                    emailField.value = decodeURIComponent(inputEmail);
+                }
+            }
+            
+            if (successMsg) {
+                successDisplay.textContent = decodeURIComponent(successMsg);
+            }
+            
+            if (errorMsg || successMsg) {
+                 const newUrl = window.location.pathname; 
+                 window.history.replaceState({}, document.title, newUrl);
+            }
+        });
+    </script>
+</body>
+</html>

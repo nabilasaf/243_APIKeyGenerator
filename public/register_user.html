@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Pendaftaran & API Key</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1f2937; color: #f3f4f6; }
+        .navbar { background-color: #374151; padding: 15px 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.2); display: flex; justify-content: flex-end; align-items: center; }
+        .navbar a { text-decoration: none; margin-left: 20px; font-weight: 600; padding: 8px 12px; border-radius: 6px; transition: background-color 0.3s; }
+        .navbar a:first-child { color: #60a5fa; border: 1px solid #60a5fa; }
+        .navbar a:last-child { color: #f3f4f6; background-color: #10b981; }
+        .navbar a:first-child:hover { background-color: #1e3a8a; }
+        .navbar a:last-child:hover { background-color: #059669; }
+        .container { max-width: 550px; margin: 80px auto; padding: 30px; border-radius: 12px; background-color: #374151; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        h2 { text-align: center; color: #a78bfa; margin-bottom: 25px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; color: #d1d5db; }
+        input[type="text"], input[type="email"] { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #4b5563; border-radius: 6px; background-color: #4b5563; color: #f3f4f6; }
+        .btn-register-final { background-color: #a78bfa; color: #1f2937; font-weight: bold; padding: 12px 15px; width: 100%; transition: background-color 0.3s; }
+        .btn-register-final:hover { background-color: #8b5cf6; }
+        .success-msg { color: #10b981; font-weight: bold; text-align: center; } 
+        .error-msg { color: #ef4444; font-weight: bold; text-align: center; } 
+        .final-key-display { background-color: #1f2937; padding: 20px; border: 1px dashed #60a5fa; margin-top: 30px; border-radius: 8px; text-align: center; }
+        #api-key-final-display { font-size: 1.1em; font-family: monospace; word-break: break-all; display: block; margin: 10px 0; color: #fbbf24; }
+    </style>
+</head>
+<body>
+    
+    <div class="navbar">
+        <a href="/admin/register">Register Admin</a>
+        <a href="/admin/login">Login Admin</a>
+    </div>
+
+    <div class="container">
+        <h2>🔑 Pendaftaran API Key</h2>
+
+        <p class="success-msg" id="message-success"></p>
+        <p class="error-msg" id="message-error"></p>
+
+        <!-- PERBAIKAN: Mengganti action ke rute API /api/register-with-key -->
+        <form id="register-form" action="/api/register-with-key" method="POST"> 
+            <div class="form-group">
+                <label for="first_name">Nama Depan:</label>
+                <input type="text" id="first_name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name">Nama Belakang:</label>
+                <input type="text" id="last_name" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <button type="submit" class="btn-register-final">Register & Generate API Key</button>
+        </form>
+
+        <div id="final-key-area" class="final-key-display" style="display: none;">
+            <h3>Key Anda Telah Tersimpan:</h3>
+            <p><strong id="api-key-final-display"></strong></p>
+            <button onclick="copyKey()" style="background-color: #60a5fa; color: white;">Salin Key</button>
+        </div>
+    </div>
+
+    <script>
+        let currentApiKey = '';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const successMsg = urlParams.get('success');
+            const errorMsg = urlParams.get('error');
+            const finalKey = urlParams.get('finalKey'); 
+            
+            const inputFirstName = urlParams.get('fn') || '';
+            const inputLastName = urlParams.get('ln') || '';
+            const inputEmail = urlParams.get('em') || '';
+
+            document.getElementById('first_name').value = decodeURIComponent(inputFirstName);
+            document.getElementById('last_name').value = decodeURIComponent(inputLastName);
+            document.getElementById('email').value = decodeURIComponent(inputEmail);
+
+            if (successMsg) {
+                document.getElementById('message-success').textContent = decodeURIComponent(successMsg);
+            } else if (errorMsg) {
+                document.getElementById('message-error').textContent = decodeURIComponent(errorMsg);
+            }
+            
+            if (finalKey) {
+                currentApiKey = finalKey; 
+                document.getElementById('final-key-area').style.display = 'block';
+                document.getElementById('api-key-final-display').textContent = finalKey;
+                document.getElementById('register-form').style.display = 'none'; 
+
+                if (!successMsg) {
+                     document.getElementById('message-success').textContent = 'Pendaftaran sukses! Key telah dibuat dan disimpan.';
+                }
+            }
+            
+            if (successMsg || errorMsg || finalKey) {
+                 const newUrl = window.location.pathname; 
+                 window.history.replaceState({}, document.title, newUrl);
+            }
+        });
+
+        function copyKey() {
+            const keyDisplay = document.getElementById('api-key-final-display');
+            const textArea = document.createElement("textarea");
+            textArea.value = keyDisplay.textContent;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                const message = successful ? 'API Key berhasil disalin ke clipboard!' : 'Gagal menyalin key.';
+                
+                const tempMsg = document.createElement('div');
+                tempMsg.textContent = message;
+                tempMsg.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background-color: #4CAF50; color: white; padding: 10px; border-radius: 5px; z-index: 1000;';
+                document.body.appendChild(tempMsg);
+                setTimeout(() => document.body.removeChild(tempMsg), 2000);
+
+            } catch (err) {
+                console.error('Fallback: Gagal menyalin API key', err);
+                const tempMsg = document.createElement('div');
+                tempMsg.textContent = 'Gagal menyalin key. Coba salin manual.';
+                tempMsg.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background-color: #f44336; color: white; padding: 10px; border-radius: 5px; z-index: 1000;';
+                document.body.appendChild(tempMsg);
+                setTimeout(() => document.body.removeChild(tempMsg), 2000);
+            }
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html>

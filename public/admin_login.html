@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+ <title>Admin Login</title>
+    <style>
+    body { 
+        margin: 0; 
+        padding: 0; 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        background-color: #1f2937; 
+        color: #f3f4f6; 
+    }
+    .container { 
+        max-width: 400px; 
+        margin: 80px auto;
+        padding: 30px; 
+        border-radius: 12px; 
+        background-color: #374151; 
+        box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        text-align: center;
+        border: none;
+    }
+    h2 {
+        color: #a78bfa;
+         margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #d1d5db;
+            text-align: left;
+            margin-top: 15px;
+}
+ input[type="email"], input[type="password"] { 
+ width: 100%; 
+ padding: 12px; 
+ margin: 8px 0; 
+ box-sizing: border-box; 
+ border: 1px solid #4b5563; 
+ border-radius: 6px; 
+ background-color: #4b5563; 
+ color: #f3f4f6; 
+}
+ button { 
+background-color: #10b981; 
+ color: #1f2937; 
+ font-weight: bold; 
+padding: 12px 15px; 
+width: 100%; 
+ border: none;
+ cursor: pointer; 
+border-radius: 6px; 
+ transition: background-color 0.3s; 
+ margin-top: 20px;
+}
+button:hover { 
+background-color: #059669; 
+}
+.container p a {
+    color: #60a5fa; 
+    text-decoration: none;
+    font-weight: bold;
+}
+.container p a:hover {
+ text-decoration: underline;
+}
+        /* Style Pesan */
+        .success-msg { color: #10b981; font-weight: bold; text-align: center; margin-bottom: 15px; }
+        .error-msg { color: #ef4444; font-weight: bold; text-align: center; margin-bottom: 15px; }
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Admin Login</h2>
+        
+        <p class="success-msg" id="server-success-message"></p>
+        <p class="error-msg" id="server-error-message"></p>
+
+<form action="/admin/login" method="POST">
+ <label for="email">Email:</label>
+ <input type="email" id="email" name="email" required><br>
+
+ <label for="password">Password:</label>
+ <input type="password" id="password" name="password" required><br><br>
+ <button type="submit">Login</button>
+</form>
+ <p>Belum punya akun? <a href="/admin/register">Register di sini</a></p>
+</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            const errorMsg = urlParams.get('error'); // Dikirimi dari server saat login gagal
+            const successMsg = urlParams.get('msg');  // Dikirimi dari server saat register/logout sukses
+            const inputEmail = urlParams.get('email');
+
+            const emailField = document.getElementById('email');
+            const errorDisplay = document.getElementById('server-error-message');
+            const successDisplay = document.getElementById('server-success-message');
+
+            if (errorMsg) {
+                errorDisplay.textContent = decodeURIComponent(errorMsg);
+                // Isi kembali field email jika login gagal
+                if (inputEmail) {
+                    emailField.value = decodeURIComponent(inputEmail);
+                }
+            }
+            
+            if (successMsg) {
+                successDisplay.textContent = decodeURIComponent(successMsg);
+            }
+            
+            // Hapus parameter dari URL agar tidak muncul lagi saat refresh
+            if (errorMsg || successMsg) {
+                 const newUrl = window.location.pathname; 
+                 window.history.replaceState({}, document.title, newUrl);
+            }
+        });
+    </script>
+</body>
+</html>
